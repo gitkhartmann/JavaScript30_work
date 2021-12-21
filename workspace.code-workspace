@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"name": "GB_JavaScript_Basic_level",
+			"path": "..\\GB_JavaScript_Basic_level"
+		},
+		{
+			"path": "..\\gb_js_level-2"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "gb_js_level-2"
+	},
+	"extensions": {
+		"recommendations": [
+			"msjsdiag.debugger-for-chrome"
+		]
+	}
+}
