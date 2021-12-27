@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+  <script>
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    const cities = [];
+
+    fetch(endpoint)
+      .then(arr => arr.json())
+      .then(data => cities.push(...data));
+
+    const inputEl = document.querySelector('input');
+    const liEls = document.querySelector('.suggestions');
+
+    function showMatches() {
+      const arrayWithMatches = findmatches(this.value, cities);
+      const html = arrayWithMatches.map(region => {
+        const regex = new RegExp(this.value, 'gi');
+        const nameCity = region.city.replace(regex, `<span class="hl">${this.value}</span>`);
+        const nameState = region.state.replace(regex, `<span class="hl">${this.value}</span>`);
+        return `
+      <li>
+        <span class="nameCityAndState">${nameCity}, ${nameState}</span>
+        <span class="population">${setCommasInNumbers(region.population)}</span>
+      </li>
+    `;
+      }).join('');
+      liEls.innerHTML = html;
+    }
+
+    function findmatches(wordWithMatch, cities) {
+      return cities.filter(region => {
+        const regex = new RegExp(wordWithMatch, 'gi');
+        return region.city.match(regex) || region.state.match(regex);
+      })
+    }
+
+    function setCommasInNumbers(num) {
+      return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    inputEl.addEventListener('change', showMatches);
+    inputEl.addEventListener('keyup', showMatches);
+
+  </script>
+</body>
+
+</html>
